@@ -6,7 +6,7 @@ import spotipy
 import spotipy.util as util
 
 username = 'fabian12062001'
-AUTH_SCOPE = 'user-library-read user-read-recently-played'
+AUTH_SCOPE = 'user-library-read user-read-recently-played playlist-modify-public'
 CLIENT_ID = '173887b931b446838389c5d09bd5ad70'
 CLIENT_SECRET = '09808f452b32455f89da74a96ff7519e'
 REDIRECT_URI = 'https://example.com/'
