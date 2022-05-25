@@ -40,10 +40,9 @@ def choose_tracks_user1(tracks):
 
 
 def main():
-	# uncomment these lines to see it in action:
-    #tracks = get_saved_tracks()
-   	#choose_tracks_user1(tracks)
+    tracks = get_saved_tracks()
+   	choose_tracks_user1(tracks)
     
 
 if __name__ == '__main__':
-    main()
+	 main()
