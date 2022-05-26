@@ -28,13 +28,13 @@ For now, I'm assuming users 1 and 2 don't go at the same time, so will populate 
 "likes" into a list.
 Returns a list of track uri's corresponding to user1's liked songs.
 '''
-def choose_tracks_user1(tracks):
+def choose_tracks_user1(sp, tracks):
 	likes = []
 	superlike = []
 	superliked = False
 	for i in range(20):
 		random_track = random.sample(tracks, 1)
-		track = auth.sp.track(random_track[0])
+		track = sp.track(random_track[0])
 		print(track['artists'][0]['name'], " - ", track['name'])
 		response = ''
 
@@ -53,14 +53,14 @@ def choose_tracks_user1(tracks):
 	return likes, superlike
 
 
-def choose_tracks_user2(my_tracks, other_tracks):
+def choose_tracks_user2(sp, my_tracks, other_tracks):
 	matches = 0
 	total_votes = 0
 	matches_list = []
 
 	while (matches < 5 and total_votes != len(my_tracks)):
 		random_track = random.sample(my_tracks, 1)
-		track = auth.sp.track(random_track[0])
+		track = sp.track(random_track[0])
 		print(track['artists'][0]['name'], " - ", track['name'])
 		response = input("yes or no: ")
 		if (response.lower() == "yes" or response.lower() == "y"):
