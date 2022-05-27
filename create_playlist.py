@@ -10,39 +10,36 @@ import auth
 #from parse_saved_tracks import choose_tracks_user1, get_saved_tracks
 #from auth import username
 
-auth.init()
-
 '''
 Returns a list of tracks that both user1 and user2 liked. 
+'''
 
-def get_common_tracks():
+def get_common_tracks(user1_liked, user2_liked, superlikes):
 	# Also pretty bogus because user1 and user2 would have different tracks but 
 	# I will fix this when later, I promise!!
-	tracks = get_saved_tracks() 
-
-	user1_liked_tracks = choose_tracks_user1(tracks)
-	user2_liked_tracks = choose_tracks_user2(tracks)
-	
-	user1_liked_tracks_set = set(user1_liked_tracks)
-	common_tracks = user1_liked_tracks_set.intersection(user2_liked_tracks)
-	return list(common_tracks)
-'''
+	user1_liked_tracks_set = set(user1_liked)
+	common_tracks = user1_liked_tracks_set.intersection(user2_liked)
+	return list(common_tracks) + list(superlikes)
 
 '''
 This function just creates the playlist. I didn't realize this code would be
 super short so I made a helper function but I don't think it is necessary anymore lol
 '''
-def gen_playlist(username, name):
+def gen_playlist(user1, user2, track_list):
 	playlist_description = "This playlist was made using Spumble!"
-	auth.sp.user_playlist_create(user=username, name=name, public=True, collaborative=False, description=playlist_description)
+	name = f"our spumble playlist: {user1.username} + {user2.username} <3"
+	user1.sp.user_playlist_create(user=user1.username, name=name, public=True, collaborative=False, description=playlist_description)
+	populate_playlist(user1, track_list)
+	user2.sp.user_playlist_create(user=user2.username, name=name, public=True, collaborative=False, description=playlist_description)
+	populate_playlist(user2, track_list)
 
 '''
 This function puts songs into the generated playlist (also v short my fault)
 '''
-def populate_playlist(username, track_list):
-	playlist = auth.sp.user_playlists(user=username)
+def populate_playlist(user, track_list):
+	playlist = user.sp.user_playlists(user=user.username)
 	pid = playlist['items'][0]['id']
-	auth.sp.user_playlist_add_tracks(user=username, playlist_id=pid, tracks=track_list)
+	user.sp.user_playlist_add_tracks(user=user.username, playlist_id=pid, tracks=track_list)
 
 def main():
 	#tracks = get_saved_tracks()

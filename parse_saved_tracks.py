@@ -1,7 +1,4 @@
-import auth
 import random
-
-auth.init()
 
 
 """
@@ -33,8 +30,8 @@ def choose_tracks_user1(sp, tracks):
 	superlike = []
 	superliked = False
 	for i in range(20):
-		random_track = random.sample(tracks, 1)
-		track = sp.track(random_track[0])
+		uri = tracks[i]
+		track = sp.track(uri)
 		print(track['artists'][0]['name'], " - ", track['name'])
 		response = ''
 
@@ -44,12 +41,12 @@ def choose_tracks_user1(sp, tracks):
 			response = input("yes or no? (y/n): " )
 
 		if (response.lower() == "yes" or response.lower() == "y"):
-			likes.append(random_track[0])
+			likes.append(uri)
 		if ((response.lower() == 's' or response.lower() == 'SUPERLIKE') and not superliked):  # if they input superlike and didn't already superlike
-			superlike.append(random_track[0])
+			superlike.append(uri)
 			superliked = True
 		if ((response.lower() == 's' or response.lower() == 'SUPERLIKE') and superliked):
-			likes.append(random_track[0])
+			likes.append(uri)
 	return likes, superlike
 
 
