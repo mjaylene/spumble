@@ -3,7 +3,7 @@ Spumble is a way to collaboratively make a playlist with another Spotify user by
 
 **created by Fabian Luna, Lisette Malacon, and Jaylene Martinez**
 
-### instructions to launch the project:
+### Instructions to launch the project:
 Install the following packages using `pip install [package-name]`:
 ```
 spotipy
