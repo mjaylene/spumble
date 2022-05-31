@@ -9,8 +9,11 @@ import time
 import auth 
 auth.init()
 
+global index 
+index = 0
+
 def next_track(window):
-    window.destory()
+    window.destroy()
 
 def get_saved_tracks():
     offset = 0
@@ -24,7 +27,7 @@ def get_saved_tracks():
         results = auth.sp.current_user_saved_tracks(limit=50, offset=offset)
     return tracks
 
-def populate_match_window(window, song_container, index):
+def populate_match_window(window, song_container):
     '''
     user = User('jayjaymobbles')
 
@@ -36,12 +39,13 @@ def populate_match_window(window, song_container, index):
     '''
     #pygame.init()
     #user = User('jayjaymobbles')
+    global index
     tracks = get_saved_tracks()
     uri = tracks[index]
     track = auth.sp.track(uri)
     song = track['artists'][0]['name'], " - ", track['name']
-    print(song)
     song_container.insert(index, song)
+    index += 1
 
 
     '''
@@ -63,7 +67,7 @@ def super_like(i, song):
     song_container.insert(i, song)
 
 
-def create_match_window(index):
+def create_match_window():
     window = Tk()
     window.title('Spumble')
     window.geometry("500x520")
@@ -85,9 +89,9 @@ def create_match_window(index):
     button_frame = Frame(window, bg='blue')
     button_frame.pack()
 
-    swipe_left_btn = Button(button_frame, image=swipe_left_img, borderwidth=0)
-    swipe_right_btn = Button(button_frame, image=swipe_right_img, borderwidth=0)
-    super_like_btn = Button(button_frame, image=super_like_img, borderwidth=0, command= lambda: populate_match_window(window, song_container, index))
+    swipe_left_btn = Button(button_frame, image=swipe_left_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
+    swipe_right_btn = Button(button_frame, image=swipe_right_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
+    super_like_btn = Button(button_frame, image=super_like_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
 
     swipe_left_btn.grid(row= 0, column=0)
     super_like_btn.grid(row= 0, column=1)
@@ -106,12 +110,7 @@ def button_functionality(window, song_container, index):
 
 
 def main():
-    index = 0
-    
-    while True:
-        window, song_container = create_match_window(index)
-        index += 1
-        print("hello")
+    window, song_container = create_match_window()
 
 if __name__ == '__main__':
     main()
