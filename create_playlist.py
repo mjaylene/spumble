@@ -15,11 +15,9 @@ Returns a list of tracks that both user1 and user2 liked.
 '''
 
 def get_common_tracks(user1_liked, user2_liked, superlikes):
-	# Also pretty bogus because user1 and user2 would have different tracks but 
-	# I will fix this when later, I promise!!
 	user1_liked_tracks_set = set(user1_liked)
 	common_tracks = user1_liked_tracks_set.intersection(user2_liked)
-	return list(common_tracks) + list(superlikes)
+	return list(common_tracks + superlikes) 
 
 '''
 This function just creates the playlist. I didn't realize this code would be
@@ -41,12 +39,13 @@ def populate_playlist(user, track_list):
 	pid = playlist['items'][0]['id']
 	user.sp.user_playlist_add_tracks(user=user.username, playlist_id=pid, tracks=track_list)
 
+'''
+This function was designed for testing the create playlist feature. It authorizes Jaylene's account
+and adds the song "Promiscuous" to a playlist on their account.
+'''
 def main():
-	#tracks = get_saved_tracks()
-	#common_tracks = choose_tracks_user1(tracks)
-	# NOTE: Just did this for now since we don't have a list of common songs yet
 	result = auth.sp.search(q="Promiscuous") 
-	username = 'jayjaymobbles' # NOTE: Also just for now cuz i was confused on how to get this
+	username = 'fabeluna'
 	common_tracks = []
 	common_tracks.append(result['tracks']['items'][0]['uri'])
 	#common_tracks = get_saved_tracks()
