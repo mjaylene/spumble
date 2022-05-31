@@ -27,7 +27,7 @@ def get_saved_tracks():
         results = auth.sp.current_user_saved_tracks(limit=50, offset=offset)
     return tracks
 
-def populate_match_window(window, song_container):
+def populate_match_window(window, song_container, tracks):
     '''
     user = User('jayjaymobbles')
 
@@ -40,11 +40,10 @@ def populate_match_window(window, song_container):
     #pygame.init()
     #user = User('jayjaymobbles')
     global index
-    tracks = get_saved_tracks()
     uri = tracks[index]
     track = auth.sp.track(uri)
     song = track['artists'][0]['name'], " - ", track['name']
-    song_container.insert(index, song)
+    song_container.insert(0, song)
     index += 1
 
 
@@ -67,7 +66,7 @@ def super_like(i, song):
     song_container.insert(i, song)
 
 
-def create_match_window():
+def create_match_window(tracks):
     window = Tk()
     window.title('Spumble')
     window.geometry("500x520")
@@ -89,9 +88,9 @@ def create_match_window():
     button_frame = Frame(window, bg='blue')
     button_frame.pack()
 
-    swipe_left_btn = Button(button_frame, image=swipe_left_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
-    swipe_right_btn = Button(button_frame, image=swipe_right_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
-    super_like_btn = Button(button_frame, image=super_like_img, borderwidth=0, command= lambda: populate_match_window(window, song_container))
+    swipe_left_btn = Button(button_frame, image=swipe_left_img, borderwidth=0, command= lambda: populate_match_window(window, song_container, tracks))
+    swipe_right_btn = Button(button_frame, image=swipe_right_img, borderwidth=0, command= lambda: populate_match_window(window, song_container, tracks))
+    super_like_btn = Button(button_frame, image=super_like_img, borderwidth=0, command= lambda: populate_match_window(window, song_container, tracks))
 
     swipe_left_btn.grid(row= 0, column=0)
     super_like_btn.grid(row= 0, column=1)
@@ -101,16 +100,10 @@ def create_match_window():
 
     return window, song_container
 
-def button_functionality(window, song_container, index):
-    super_like_img = PhotoImage(file='images/super_like_yellow.png')
-    super_like_btn = Button(button_frame, image=super_like_img, borderwidth=0, command= lambda: populate_match_window(window, song_container, index))
-    #super_like_btn.grid(row= 0, column=1)
-    window.mainloop()
-
-
 
 def main():
-    window, song_container = create_match_window()
+    tracks = get_saved_tracks() 
+    window, song_container = create_match_window(tracks)
 
 if __name__ == '__main__':
     main()
