@@ -1,7 +1,4 @@
 from tkinter import *
-import pygame
-#import create_playlist
-#from matchmaker import MatchMaker, User
 import parse_saved_tracks
 import spotipy
 import spotipy.util as util
