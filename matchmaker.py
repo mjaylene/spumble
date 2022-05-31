@@ -1,5 +1,6 @@
 import create_playlist
 import parse_saved_tracks
+from music_player import create_match_window, create_close_window
 import random
 import spotipy
 import spotipy.util as util
@@ -18,23 +19,20 @@ class MatchMaker:
     def __init__(self, user1, user2) -> None:
         self.user1 = user1
         self.user2 = user2
-        self.all_tracks = user1.tracks + user2.tracks
-        random.shuffle(self.all_tracks)
+        user1_tracks = user1.tracks
+        random.shuffle(user1_tracks)
+        user2_tracks = user2.tracks
+        random.shuffle(user2_tracks)
+        self.all_tracks = user1_tracks[:10] + user2_tracks[:10]
 
 
     def matchmake(self):
-        print(f"{self.user1.username} now picking tracks.")
-        likes1, superlike1 = parse_saved_tracks.choose_tracks_user1(self.user1.sp, self.all_tracks)
-        print(f"{self.user2.username} now picking tracks.")
-        likes2, superlike2 = parse_saved_tracks.choose_tracks_user1(self.user2.sp, self.all_tracks)
+        likes1, superlike1 = create_match_window(self.user1.username, self.user1.sp, self.all_tracks)
+        likes2, superlike2 = create_match_window(self.user2.username, self.user2.sp, self.all_tracks)
         superlikes = set(superlike1 + superlike2)
         self.common_liked = create_playlist.get_common_tracks(likes1, likes2, superlikes)
-        print(f"You have {len(self.common_liked)} matches!")
-        print(f"Now generating playlists...")
         create_playlist.gen_playlist(self.user1, self.user2, self.common_liked)
-        time.sleep(1.5)
-        print(f"Playlists made! It is now in your Spotify account. Thank you for using Spumble <3")
-
+        create_close_window(self.common_liked)        
 
 
 class User:
